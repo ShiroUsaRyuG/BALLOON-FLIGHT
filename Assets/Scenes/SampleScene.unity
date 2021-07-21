@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 112329300}
   - component: {fileID: 112329304}
   - component: {fileID: 112329303}
+  - component: {fileID: 112329305}
   m_Layer: 0
   m_Name: Yuko_Player
   m_TagString: Untagged
@@ -264,6 +265,19 @@ CapsuleCollider2D:
   m_Offset: {x: 0.033741474, y: -0.036946338}
   m_Size: {x: 0.2908389, y: 0.40610737}
   m_Direction: 0
+--- !u!114 &112329305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112329299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a05a70b1dacf6f942b540927d0ecb13c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 3
 --- !u!1 &132278340 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1385549284409674, guid: 486f42fcb063b4b4fa79b395c40825eb, type: 3}
