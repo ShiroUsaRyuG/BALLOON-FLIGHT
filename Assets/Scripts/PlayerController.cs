@@ -8,7 +8,10 @@ public class PlayerController : MonoBehaviour
     private string jump = "Jump";
     private Rigidbody2D rb;
     private Animator anim;
+    private float limitPosX = 8.9f;
+    private float limitPosY = 4.4f;
     private float scale;
+    private float maxHeight = 5.0f;
     public float moveSpeed;
     public float jumpPower;
     public bool isGrounded;
@@ -36,6 +39,10 @@ public class PlayerController : MonoBehaviour
         if (isGrounded == false && rb.velocity.y < 0.15f)
         {
             anim.SetTrigger("Fall");
+        }
+        if (rb.velocity.y > maxHeight)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, maxHeight);
         }
     }
 
@@ -80,5 +87,8 @@ public class PlayerController : MonoBehaviour
             anim.SetFloat("Run", 0.0f);
             anim.SetBool("Idle", true);
         }
+        float posX = Mathf.Clamp(transform.position.x, -limitPosX, limitPosX);
+        float posY = Mathf.Clamp(transform.position.y, -limitPosY, limitPosY);
+        transform.position = new Vector2(posX, posY);
     }
 }
