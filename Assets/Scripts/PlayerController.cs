@@ -5,17 +5,44 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private string horizontal = "Horizontal";
+    private string jump = "Jump";
     private Rigidbody2D rb;
     private Animator anim;
     private float scale;
     public float moveSpeed;
-
+    public float jumpPower;
+    public bool isGrounded;
+    [SerializeField, Header("Linecast用 地面判定レイヤー")]
+    private LayerMask groundLayer;
+    
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         scale = transform.localScale.x;
+    }
+
+    void Update()
+    {
+        isGrounded = Physics2D.Linecast(transform.position + transform.up * 0.4f,
+            transform.position - transform.up * 0.9f, groundLayer);
+        Debug.DrawLine(transform.position + transform.up * 0.4f,
+            transform.position - transform.up * 0.9f, Color.red, 1.0f);
+        if (Input.GetButtonDown(jump))
+        {
+            Jump();
+        }
+        if (isGrounded == false && rb.velocity.y < 0.15f)
+        {
+            anim.SetTrigger("Fall");
+        }
+    }
+
+    private void Jump()
+    {
+        rb.AddForce(transform.up * jumpPower);
+        anim.SetTrigger("Jump");
     }
 
     // Update is called once per frame
