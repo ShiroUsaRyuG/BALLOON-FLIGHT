@@ -12,17 +12,26 @@ public class PlayerController : MonoBehaviour
     private float limitPosY = 4.4f;
     private float scale;
     private float maxHeight = 5.0f;
+    public GameObject[] balloons;
+
+    public int maxBalloonCount;
+    public Transform[] balloonTrans;
+    public GameObject balloonPrefab;
+    public float generateTime;
+    public bool isGenerating;
+
     public float moveSpeed;
     public float jumpPower;
     public bool isGrounded;
     [SerializeField, Header("Linecast用 地面判定レイヤー")]
     private LayerMask groundLayer;
-    
+
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        balloons = new GameObject[maxBalloonCount];
         scale = transform.localScale.x;
     }
 
@@ -32,17 +41,30 @@ public class PlayerController : MonoBehaviour
             transform.position - transform.up * 0.9f, groundLayer);
         Debug.DrawLine(transform.position + transform.up * 0.4f,
             transform.position - transform.up * 0.9f, Color.red, 1.0f);
-        if (Input.GetButtonDown(jump))
+        if (balloons[0] != null)
         {
-            Jump();
-        }
-        if (isGrounded == false && rb.velocity.y < 0.15f)
+            if (Input.GetButtonDown(jump))
+            {
+                Jump();
+            }
+            if (isGrounded == false && rb.velocity.y < 0.15f)
+            {
+                anim.SetTrigger("Fall");
+            }
+        } else
         {
-            anim.SetTrigger("Fall");
+            Debug.Log("バルーンがない。ジャンプ不可");
         }
         if (rb.velocity.y > maxHeight)
         {
             rb.velocity = new Vector2(rb.velocity.x, maxHeight);
+        }
+        if (isGrounded == true && isGenerating == false)
+        {
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                StartCoroutine(GenerateBalloon());
+            }
         }
     }
 
@@ -65,7 +87,7 @@ public class PlayerController : MonoBehaviour
     {
         float x = Input.GetAxis(horizontal);
 
-        if(x != 0)
+        if (x != 0)
         {
             rb.velocity = new Vector2(x * moveSpeed, rb.velocity.y);
             Vector3 temp = transform.localScale;
@@ -90,5 +112,28 @@ public class PlayerController : MonoBehaviour
         float posX = Mathf.Clamp(transform.position.x, -limitPosX, limitPosX);
         float posY = Mathf.Clamp(transform.position.y, -limitPosY, limitPosY);
         transform.position = new Vector2(posX, posY);
+    }
+
+    private IEnumerator GenerateBalloon() 
+    {
+        if (balloons[1] != null)
+        {
+            yield break;
+        }
+
+        isGenerating = true;
+
+        if (balloons[0] == null)
+        {
+            balloons[0] = Instantiate(balloonPrefab, balloonTrans[0]);
+        }
+        else
+        {
+            balloons[1] = Instantiate(balloonPrefab, balloonTrans[1]);
+        }
+
+        yield return new WaitForSeconds(generateTime);
+
+        isGenerating = false;
     }
 }
