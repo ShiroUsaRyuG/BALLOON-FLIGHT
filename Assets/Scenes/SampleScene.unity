@@ -279,6 +279,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a05a70b1dacf6f942b540927d0ecb13c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isFirstGenerateBalloon: 0
   balloons: []
   maxBalloonCount: 2
   balloonTrans:
@@ -293,6 +294,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
+  startChecker: {fileID: 1206008326}
 --- !u!1 &132278340 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1385549284409674, guid: 486f42fcb063b4b4fa79b395c40825eb, type: 3}
@@ -601,7 +603,7 @@ MonoBehaviour:
   heightRange: 4
   aerialFloorPrefab: {fileID: 5859498982392783028, guid: e66ed1c6d3875744a87a6aecd5bdfe25, type: 3}
   genetateTran: {fileID: 440344820}
-  waitTime: 3
+  waitTime: 6
 --- !u!4 &640296592
 Transform:
   m_ObjectHideFlags: 0
@@ -772,7 +774,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 778af240ffc3fd94f929784c196da6e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scrollSpeed: 0.01
+  scrollSpeed: 0.03
   stopPosition: -17.8
   restartPosition: 17.8
 --- !u!1 &1104438023
@@ -805,7 +807,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 778af240ffc3fd94f929784c196da6e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scrollSpeed: 0.01
+  scrollSpeed: 0.03
   stopPosition: -17.8
   restartPosition: 17.8
 --- !u!212 &1104438025
@@ -883,6 +885,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1206008324}
   - component: {fileID: 1206008325}
+  - component: {fileID: 1206008326}
   m_Layer: 8
   m_Name: Ground_Start
   m_TagString: Untagged
@@ -920,7 +923,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bc7e18a6058162458a4cd2d21f1b39c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0.03
+  moveSpeed: 0
+--- !u!114 &1206008326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1206008323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39f544d254ee60946b49f231ca81a327, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StartSpeed: 0.01
 --- !u!1 &1452761366 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1385549284409674, guid: 486f42fcb063b4b4fa79b395c40825eb, type: 3}

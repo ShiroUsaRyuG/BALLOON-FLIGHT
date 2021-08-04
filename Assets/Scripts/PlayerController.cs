@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     private Animator anim;
     private float limitPosX = 8.9f;
     private float limitPosY = 4.4f;
+    public bool isFirstGenerateBalloon;
     private float scale;
     private float maxHeight = 5.0f;
     public GameObject[] balloons;
@@ -25,6 +26,9 @@ public class PlayerController : MonoBehaviour
     public bool isGrounded;
     [SerializeField, Header("Linecast用 地面判定レイヤー")]
     private LayerMask groundLayer;
+    [SerializeField]
+    private StartChecker startChecker;
+
 
     // Start is called before the first frame update
     void Start()
@@ -122,6 +126,13 @@ public class PlayerController : MonoBehaviour
         }
 
         isGenerating = true;
+
+        if (isFirstGenerateBalloon == false)
+        {
+            isFirstGenerateBalloon = true;
+            Debug.Log("初回のバルーン生成");
+            startChecker.SetInitialSpeed();
+        }
 
         if (balloons[0] == null)
         {
