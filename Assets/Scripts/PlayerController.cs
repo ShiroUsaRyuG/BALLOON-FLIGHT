@@ -20,10 +20,13 @@ public class PlayerController : MonoBehaviour
     public GameObject balloonPrefab;
     public float generateTime;
     public bool isGenerating;
+    public float knockbackPower;
+    public int coinPoint;
 
     public float moveSpeed;
     public float jumpPower;
     public bool isGrounded;
+
     [SerializeField, Header("Linecast用 地面判定レイヤー")]
     private LayerMask groundLayer;
     [SerializeField]
@@ -137,14 +140,47 @@ public class PlayerController : MonoBehaviour
         if (balloons[0] == null)
         {
             balloons[0] = Instantiate(balloonPrefab, balloonTrans[0]);
+            balloons[0].GetComponent<Balloon>().SetUpBalloon(this);
         }
         else
         {
             balloons[1] = Instantiate(balloonPrefab, balloonTrans[1]);
+            balloons[1].GetComponent<Balloon>().SetUpBalloon(this);
         }
 
         yield return new WaitForSeconds(generateTime);
 
         isGenerating = false;
+    }
+
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.gameObject.tag == "Enemy")
+        {
+            Vector3 direction = (transform.position - col.transform.position).normalized;
+            transform.position += direction * knockbackPower;
+        }
+    }
+
+    public void DestroyBalloon()
+    {
+        // TODO 後ほど、バルーン破壊の際に「割れた」ように見えるアニメ演出を追加
+
+        if (balloons[1] != null)
+        {
+            Destroy(balloons[1]);
+        }else if (balloons[0] != null)
+        {
+            Destroy(balloons[0]);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.gameObject.tag == "Coin")
+        {
+            coinPoint += col.gameObject.GetComponent<Coin>().Point;
+            Destroy(col.gameObject);
+        }
     }
 }
