@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
     public bool isGenerating;
     public float knockbackPower;
     public int coinPoint;
+    public UIManager uiManager;
 
     public float moveSpeed;
     public float jumpPower;
@@ -180,6 +181,7 @@ public class PlayerController : MonoBehaviour
         if (col.gameObject.tag == "Coin")
         {
             coinPoint += col.gameObject.GetComponent<Coin>().Point;
+            uiManager.UpdateDisplayScore(coinPoint);
             Destroy(col.gameObject);
         }
     }

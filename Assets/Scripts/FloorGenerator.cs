@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class FloorGenerator : MonoBehaviour    
 {
-    public float heightRange = 4.0f;
+    [SerializeField]
+    private float heightRange = 4.0f;
     [SerializeField]
     private GameObject aerialFloorPrefab;
     [SerializeField]
