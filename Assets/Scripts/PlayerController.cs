@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     private Animator anim;
     private float limitPosX = 8.9f;
     private float limitPosY = 4.4f;
+    private bool isGameOver = false;
     public bool isFirstGenerateBalloon;
     private float scale;
     private float maxHeight = 5.0f;
@@ -85,6 +86,11 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if(isGameOver == true)
+        {
+            return;
+        }
+
         Move();
     }
 
@@ -184,5 +190,11 @@ public class PlayerController : MonoBehaviour
             uiManager.UpdateDisplayScore(coinPoint);
             Destroy(col.gameObject);
         }
+    }
+
+    public void GameOver()
+    {
+        isGameOver = true;
+        uiManager.DisplayGameOverInfo();
     }
 }
