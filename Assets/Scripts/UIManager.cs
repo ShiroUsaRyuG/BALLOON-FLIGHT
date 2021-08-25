@@ -8,12 +8,15 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField]
     private Text txtscore;
-
     [SerializeField]
     private Text txtInfo;
-
     [SerializeField]
     private CanvasGroup canvasGroupInfo;
+    [SerializeField]
+    private ResultPopUp resultPopUpPrefab;
+    [SerializeField]
+    private Transform canvasTran;
+
 
     public void UpdateDisplayScore(int score)
     {
@@ -24,5 +27,11 @@ public class UIManager : MonoBehaviour
     {
         canvasGroupInfo.DOFade(1.0f, 1.0f);
         txtInfo.DOText("Game Over...", 1.0f);
+    }
+
+    public void GenerateResultPopUp(int score)
+    {
+        ResultPopUp resultPopUp = Instantiate(resultPopUpPrefab, canvasTran, false);
+        resultPopUp.SetUpResultPopUp(score);
     }
 }
