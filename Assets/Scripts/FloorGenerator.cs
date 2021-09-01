@@ -11,6 +11,8 @@ public class FloorGenerator : MonoBehaviour
     [SerializeField]
     private Transform genetateTran;
 
+    private GameDirector gameDirector;
+
     [Header("¶¬‚Ü‚Å‚Ì‘Ò‹@ŠÔ")]
     public float waitTime;
     private float timer;
@@ -38,5 +40,14 @@ public class FloorGenerator : MonoBehaviour
         GameObject obj = Instantiate(aerialFloorPrefab, genetateTran);
         float randomPosY = Random.Range(-heightRange, heightRange);
         obj.transform.position = new Vector2(obj.transform.position.x, obj.transform.position.y + randomPosY);
+        gameDirector.GenerateCount++;
+    }
+
+    public void SetUpGenerator(GameDirector gameDirector)
+    {
+        this.gameDirector = gameDirector;
+
+        // TODO ‘¼‚É‚à‰Šúİ’è‚µ‚½‚¢î•ñ‚ª‚ ‚éê‡‚É‚±‚±‚Éˆ—‚ğ’Ç‰Á
+
     }
 }
