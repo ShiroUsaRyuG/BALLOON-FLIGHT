@@ -23,7 +23,7 @@ public class Balloon : MonoBehaviour
         {
             tweener.Kill();
 
-            playerController.DestroyBalloon();
+            playerController.DestroyBalloon(this);
         }
     }
 

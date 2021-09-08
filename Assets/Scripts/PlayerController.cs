@@ -14,11 +14,12 @@ public class PlayerController : MonoBehaviour
     public bool isFirstGenerateBalloon;
     private float scale;
     private float maxHeight = 5.0f;
-    public GameObject[] balloons;
+    public List<Balloon> balloonList = new List<Balloon>();
 
     public int maxBalloonCount;
     public Transform[] balloonTrans;
-    public GameObject balloonPrefab;
+
+    public Balloon balloonPrefab;
     public float generateTime;
     public bool isGenerating;
     public float knockbackPower;
@@ -33,6 +34,12 @@ public class PlayerController : MonoBehaviour
     private LayerMask groundLayer;
     [SerializeField]
     private StartChecker startChecker;
+    [SerializeField]
+    private AudioClip knockbackSE;
+    [SerializeField]
+    private AudioClip coinSE;
+    [SerializeField]
+    private GameObject knockbackEffectPrefab;
 
 
     // Start is called before the first frame update
@@ -40,7 +47,6 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        balloons = new GameObject[maxBalloonCount];
         scale = transform.localScale.x;
     }
 
@@ -50,7 +56,7 @@ public class PlayerController : MonoBehaviour
             transform.position - transform.up * 0.9f, groundLayer);
         Debug.DrawLine(transform.position + transform.up * 0.4f,
             transform.position - transform.up * 0.9f, Color.red, 1.0f);
-        if (balloons[0] != null)
+        if (balloonList.Count > 0)
         {
             if (Input.GetButtonDown(jump))
             {
@@ -68,11 +74,11 @@ public class PlayerController : MonoBehaviour
         {
             rb.velocity = new Vector2(rb.velocity.x, maxHeight);
         }
-        if (isGrounded == true && isGenerating == false)
+        if (isGrounded == true && isGenerating == false && balloonList.Count < maxBalloonCount)
         {
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                StartCoroutine(GenerateBalloon());
+                StartCoroutine(GenerateBalloon(1, generateTime));
             }
         }
     }
@@ -128,9 +134,9 @@ public class PlayerController : MonoBehaviour
         transform.position = new Vector2(posX, posY);
     }
 
-    private IEnumerator GenerateBalloon() 
+    private IEnumerator GenerateBalloon(int balloonCount, float waitTime) 
     {
-        if (balloons[1] != null)
+        if (balloonList.Count >= maxBalloonCount)
         {
             yield break;
         }
@@ -144,7 +150,7 @@ public class PlayerController : MonoBehaviour
             startChecker.SetInitialSpeed();
         }
 
-        if (balloons[0] == null)
+      /*if (balloons[0] == null)
         {
             balloons[0] = Instantiate(balloonPrefab, balloonTrans[0]);
             balloons[0].GetComponent<Balloon>().SetUpBalloon(this);
@@ -155,7 +161,23 @@ public class PlayerController : MonoBehaviour
             balloons[1].GetComponent<Balloon>().SetUpBalloon(this);
         }
 
-        yield return new WaitForSeconds(generateTime);
+        yield return new WaitForSeconds(generateTime);*/
+
+        for (int i = 0;i < balloonCount; i++)
+        {
+            Balloon balloon;
+            if (balloonTrans[0].childCount == 0)
+            {
+                balloon = Instantiate(balloonPrefab, balloonTrans[0]);
+            }
+            else
+            {
+                balloon = Instantiate(balloonPrefab, balloonTrans[1]);
+            }
+            balloon.SetUpBalloon(this);
+            balloonList.Add(balloon);
+            yield return new WaitForSeconds(generateTime);
+        }
 
         isGenerating = false;
     }
@@ -166,20 +188,27 @@ public class PlayerController : MonoBehaviour
         {
             Vector3 direction = (transform.position - col.transform.position).normalized;
             transform.position += direction * knockbackPower;
+            AudioSource.PlayClipAtPoint(knockbackSE, transform.position);
+            GameObject knockbackEffect = 
+                Instantiate(knockbackEffectPrefab, col.transform.position, Quaternion.identity);
+            Destroy(knockbackEffect, 0.5f);
         }
     }
 
-    public void DestroyBalloon()
+    public void DestroyBalloon(Balloon balloon)
     {
         // TODO 後ほど、バルーン破壊の際に「割れた」ように見えるアニメ演出を追加
 
-        if (balloons[1] != null)
-        {
-            Destroy(balloons[1]);
-        }else if (balloons[0] != null)
-        {
-            Destroy(balloons[0]);
-        }
+        /*if (balloons[1] != null)
+          {
+              Destroy(balloons[1]);
+          }else if (balloons[0] != null)
+          {
+              Destroy(balloons[0]);
+          }*/
+
+        balloonList.Remove(balloon);
+        Destroy(balloon.gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D col)
@@ -188,6 +217,7 @@ public class PlayerController : MonoBehaviour
         {
             coinPoint += col.gameObject.GetComponent<Coin>().Point;
             uiManager.UpdateDisplayScore(coinPoint);
+            AudioSource.PlayClipAtPoint(coinSE, transform.position);
             Destroy(col.gameObject);
         }
     }

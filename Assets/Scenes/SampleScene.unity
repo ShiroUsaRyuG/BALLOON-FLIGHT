@@ -280,12 +280,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isFirstGenerateBalloon: 0
-  balloons: []
+  balloonList: []
   maxBalloonCount: 2
   balloonTrans:
   - {fileID: 1994125968}
   - {fileID: 597001700}
-  balloonPrefab: {fileID: 2747266474814437164, guid: faadcac15812ea14f9d7913fb1581a55, type: 3}
+  balloonPrefab: {fileID: 8011159826688626343, guid: faadcac15812ea14f9d7913fb1581a55, type: 3}
   generateTime: 0.4
   isGenerating: 0
   knockbackPower: 2
@@ -298,6 +298,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   startChecker: {fileID: 1206008326}
+  knockbackSE: {fileID: 8300000, guid: 2e87275b2a7c7214399b08002dd67f8f, type: 3}
+  coinSE: {fileID: 8300000, guid: 9fc24f32071a12146ba2a4d66149ee2b, type: 3}
+  knockbackEffectPrefab: {fileID: 100000, guid: 7d6835d9db898fa4bbfda5d62c496786, type: 3}
 --- !u!1 &132278340 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1385549284409674, guid: 486f42fcb063b4b4fa79b395c40825eb, type: 3}
@@ -1906,7 +1909,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1212650707}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.17, y: -6.43, z: 0}
+  m_LocalPosition: {x: 0.17, y: -6.7, z: 0}
   m_LocalScale: {x: 18.106049, y: 3.0052135, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
