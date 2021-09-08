@@ -16,7 +16,9 @@ public class FloorGenerator : MonoBehaviour
     [Header("¶¬‚Ü‚Å‚Ì‘Ò‹@ŠÔ")]
     public float waitTime;
     private float timer;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+
+    private bool isActivate;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +28,10 @@ public class FloorGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isActivate == false)
+        {
+            return;
+        }
         timer += Time.deltaTime;
 
         if (timer >= waitTime)
@@ -49,5 +55,10 @@ public class FloorGenerator : MonoBehaviour
 
         // TODO ‘¼‚É‚à‰Šúİ’è‚µ‚½‚¢î•ñ‚ª‚ ‚éê‡‚É‚±‚±‚Éˆ—‚ğ’Ç‰Á
 
+    }
+
+    public void SwitchActivation(bool isSwitch)
+    {
+        isActivate = isSwitch;
     }
 }

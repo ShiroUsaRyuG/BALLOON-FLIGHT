@@ -8,6 +8,7 @@ public class GoalChecker : MonoBehaviour
     public float moveSpeed = 0.03f;
     private float stopPos = 6.5f;
     private bool isGoal;
+    private GameDirector gameDirector;
 
     // Start is called before the first frame update
     void Start()
@@ -28,10 +29,16 @@ public class GoalChecker : MonoBehaviour
        if (col.gameObject.tag == "Player" && isGoal == false)
         {
             isGoal = true;
-            Debug.Log("ÉQÅ[ÉÄÉNÉäÉA");
 
             PlayerController playerController = col.gameObject.GetComponent<PlayerController>();
             playerController.uiManager.GenerateResultPopUp(playerController.coinPoint);
+            
+            gameDirector.GoalClear();
         } 
+    }
+
+    public void SetUpGoalHouse(GameDirector gameDirector)
+    {
+        this.gameDirector = gameDirector;
     }
 }

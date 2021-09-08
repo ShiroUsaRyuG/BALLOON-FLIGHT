@@ -10,6 +10,10 @@ public class GameDirector : MonoBehaviour
     private PlayerController playerController;
     [SerializeField]
     private FloorGenerator[] floorGenerators;
+    [SerializeField]
+    private RandomObjectGenerator[] randomObjectGenerators;
+    [SerializeField]
+    private AudioManager audioManager;
 
     private bool isSetUp;
     private bool isGameUp;
@@ -39,12 +43,12 @@ public class GameDirector : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        StartCoroutine(audioManager.PlayBGM(0));
         isGameUp = false;
         isSetUp = false;
 
         SetUpFloorGenerators();
-
-        Debug.Log("生成停止");
+        SwitchGenerators(isSetUp);
     }
 
     private void SetUpFloorGenerators()
@@ -61,19 +65,43 @@ public class GameDirector : MonoBehaviour
         if(playerController.isFirstGenerateBalloon && isSetUp == false)
         {
             isSetUp = true;
-            Debug.Log("生成スタート");
+            SwitchGenerators(isSetUp);
+            StartCoroutine(audioManager.PlayBGM(1));
         }
     }
 
     private void GenerateGoal()
     {
         GoalChecker goalHouse = Instantiate(goalHousePrefab);
-        Debug.Log("ゴール地点 生成");
+        goalHouse.SetUpGoalHouse(this);
     }
 
     public void GameUp()
     {
         isGameUp = true;
-        Debug.Log("生成停止");
+        SwitchGenerators(!isSetUp);
+    }
+
+    private void SwitchGenerators(bool isSwitch)
+    {
+        for (int i = 0; i<randomObjectGenerators.Length; i++)
+        {
+            randomObjectGenerators[i].SwitchActivation(isSwitch);
+        }
+
+        for (int i = 0; i < floorGenerators.Length; i++)
+        {
+            floorGenerators[i].SwitchActivation(isSwitch);
+        }
+    }
+
+    public void GoalClear()
+    {
+        StartCoroutine(audioManager.PlayBGM(2));
+    }
+
+    public void GameOver()
+    {
+        StartCoroutine(audioManager.PlayBGM(3));
     }
 }
